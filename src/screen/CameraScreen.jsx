@@ -3,25 +3,31 @@ import {
   Text,
   View,
   PermissionsAndroid,
+  Button,
   TouchableOpacity,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-
+import IoniconsIcon from "react-native-vector-icons/Ionicons";
+import Modal from "react-native-modal";
 import {
   saveRecordingDetails,
   selectSaveRecordingData,
 } from "../app/features/camera/cameraSlice";
+import Video from "react-native-video";
 import { formatTime } from "../utils/TimerCounter";
 const CameraScreen = () => {
   const devices = useCameraDevices();
   const device = devices.back;
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isflashOn, setIsflashOn] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const intervalRef = useRef();
   const cameraRef = useRef(null);
+  const videoRef = useRef();
 
   const videoDetails = useSelector(selectSaveRecordingData);
   const dispatch = useDispatch();
@@ -50,11 +56,11 @@ const CameraScreen = () => {
     }
   };
 
-  const StartRecording = () => {
+  const StartRecording = async () => {
+    const codecs = await cameraRef.current.getAvailableVideoCodecs("mp4");
     cameraRef.current.startRecording({
-      flash: "off",
+      flash: isflashOn ? "on" : "off",
       onRecordingFinished: async (video) => {
-        const codecs = await cameraRef.current.getAvailableVideoCodecs("mp4");
         dispatch(
           saveRecordingDetails({
             duration: video.duration,
@@ -63,9 +69,8 @@ const CameraScreen = () => {
             codecs: codecs,
           })
         );
-
         console.log(videoDetails);
-        Navigation.navigate("VideoViewer");
+        setModalVisible(true);
       },
       onRecordingError: (error) => console.error(error),
     });
@@ -102,7 +107,7 @@ const CameraScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={{ color: "black" }}>
-        CameraScreen :: {formatTime(seconds)}
+        CameraScreen : {formatTime(seconds)}
       </Text>
       <View style={styles.timerContainer}>
         <View
@@ -115,7 +120,46 @@ const CameraScreen = () => {
           {formatTime(seconds)}
         </Text>
       </View>
-
+      <View style={styles.flashContainer}>
+        <IoniconsIcon
+          name="flash"
+          size={30}
+          color="#fff"
+          onPress={() => setIsflashOn(!isflashOn)}
+        />
+      </View>
+      <Modal
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text>This is a modal!</Text>
+            <View
+              style={{
+                width: "100%",
+                height: 300,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Video
+                source={{ uri: videoDetails?.path }}
+                ref={videoRef}
+                style={{
+                  width: 200,
+                  height: 280,
+                }}
+              />
+            </View>
+            <View style={{ flexDirection: "row", gap: 10 }}>
+              <Button title="Close" onPress={() => setModalVisible(false)} />
+              <Button title="UpLoad" onPress={() => setModalVisible(false)} />
+            </View>
+          </View>
+        </View>
+      </Modal>
       <Camera
         ref={cameraRef}
         style={styles.CameraVideo}
@@ -156,6 +200,14 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 30,
   },
+  flashContainer: {
+    position: "absolute",
+    top: 100,
+    right: 10,
+    width: 60,
+    padding: 7,
+    zIndex: 5,
+  },
   CameraVideo: { width: "100%", height: "100%" },
 
   camBtn: {
@@ -168,5 +220,22 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 50,
     alignSelf: "center",
+  },
+
+  modalContainer: {
+    backgroundColor: "#fff",
+    padding: 10,
+    width: "100%",
+    // height: "50%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+  },
+  modalContent: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
   },
 });
