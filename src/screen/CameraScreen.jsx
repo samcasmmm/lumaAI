@@ -5,6 +5,8 @@ import {
   PermissionsAndroid,
   Button,
   TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
@@ -15,23 +17,40 @@ import Modal from "react-native-modal";
 import {
   saveRecordingDetails,
   selectSaveRecordingData,
+  selectAPIKEY,
+  clearRecordingDetails,
 } from "../app/features/camera/cameraSlice";
+import {
+  useCreateCaptureMutation,
+  useUploadCaptureMutation,
+  useTriggerCaptureMutation,
+} from "../app/features/camera/captureApiSlice";
 import Video from "react-native-video";
 import { formatTime } from "../utils/TimerCounter";
 const CameraScreen = () => {
   const devices = useCameraDevices();
   const device = devices.back;
+
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [isflashOn, setIsflashOn] = useState(false);
   const [seconds, setSeconds] = useState(0);
+  const [videoName, setVideoName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const intervalRef = useRef();
   const cameraRef = useRef(null);
   const videoRef = useRef();
 
   const videoDetails = useSelector(selectSaveRecordingData);
+  const APIKEY = useSelector(selectAPIKEY);
+
+  const [createCapture] = useCreateCaptureMutation();
+  const [uploadCapture] = useUploadCaptureMutation();
+  const [triggerCapture] = useTriggerCaptureMutation();
+
   const dispatch = useDispatch();
-  const Navigation = useNavigation();
+  const navigation = useNavigation();
 
   const startTimer = () => {
     setIsTimerRunning(true);
@@ -61,7 +80,7 @@ const CameraScreen = () => {
     cameraRef.current.startRecording({
       flash: isflashOn ? "on" : "off",
       onRecordingFinished: async (video) => {
-        dispatch(
+        await dispatch(
           saveRecordingDetails({
             duration: video.duration,
             path: video.path,
@@ -77,6 +96,8 @@ const CameraScreen = () => {
   };
   const StopRecording = async () => {
     await cameraRef.current.stopRecording();
+    // dispatch(clearRecordingDetails());
+    // console.log("Recording data cleared");
   };
 
   const checkPermission = async () => {
@@ -97,6 +118,42 @@ const CameraScreen = () => {
         // Permissions still not granted, handle this case
       }
     }
+  };
+
+  const handleUploadCapture = async () => {
+    setIsLoading(true);
+    try {
+      console.log(`${videoName} - ${APIKEY}`);
+      await createCapture({
+        title: videoName,
+        key: APIKEY,
+      })
+        .then(async (res) => {
+          console.log(res.data);
+          await uploadCapture({
+            url: res.data.signedUrls?.source,
+            videoPath: videoDetails.path,
+          });
+          return res;
+        })
+        .then(async (res) => {
+          console.log("trigger-res", res);
+          const triggerRes = await triggerCapture({
+            slug: res.data.capture.slug,
+            key: APIKEY,
+          });
+          console.log(triggerRes);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log("catch1", err);
+          setIsLoading(false);
+        });
+    } catch (error) {
+      console.log("catch2", error);
+      setIsLoading(false);
+    }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -124,7 +181,7 @@ const CameraScreen = () => {
         <IoniconsIcon
           name="flash"
           size={30}
-          color="#fff"
+          color={isflashOn ? "#ff0037" : "#ccc"}
           onPress={() => setIsflashOn(!isflashOn)}
         />
       </View>
@@ -135,7 +192,16 @@ const CameraScreen = () => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text>This is a modal!</Text>
+            <Text
+              style={{
+                color: "#1e88e5",
+                fontWeight: "bold",
+                padding: 5,
+                fontSize: 16,
+              }}
+            >
+              Do you to want upload this ?
+            </Text>
             <View
               style={{
                 width: "100%",
@@ -153,9 +219,56 @@ const CameraScreen = () => {
                 }}
               />
             </View>
+            <TextInput
+              placeholder="Enter video name"
+              value={videoName}
+              onChangeText={setVideoName}
+              style={{
+                width: "92%",
+                height: 40,
+                margin: 8,
+                borderWidth: 1,
+                borderColor: "#ccc",
+                borderRadius: 5,
+                padding: 10,
+                color: "#000000",
+              }}
+            />
             <View style={{ flexDirection: "row", gap: 10 }}>
-              <Button title="Close" onPress={() => setModalVisible(false)} />
-              <Button title="UpLoad" onPress={() => setModalVisible(false)} />
+              <TouchableOpacity
+                style={{ width: "45%", backgroundColor: "#1e88e5" }}
+                onPress={() => handleUploadCapture()}
+              >
+                {!isLoading ? (
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      padding: 8,
+                      fontWeight: "bold",
+                      color: "#ffffff",
+                    }}
+                  >
+                    Upload
+                  </Text>
+                ) : (
+                  <ActivityIndicator />
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ width: "45%", backgroundColor: "#1e88e5" }}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    padding: 8,
+                    fontWeight: "bold",
+                    color: "#ffffff",
+                  }}
+                >
+                  Close
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -179,6 +292,7 @@ export default CameraScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: "100%",
   },
   timerContainer: {
     backgroundColor: "rgba(0,0,0,.5)",

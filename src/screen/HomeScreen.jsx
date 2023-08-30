@@ -20,7 +20,6 @@ const HomeScreen = () => {
 
   const getCreditsData = async () => {
     try {
-      console.log(APIKEY);
       console.log(creditsData);
     } catch (error) {
       console.log(error);

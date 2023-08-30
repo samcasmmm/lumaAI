@@ -9,7 +9,7 @@ const initialState = {
   },
   index: 1,
   apikey:
-    "a374e113-58aa-494a-badc-b69049702c74-6cfc3c7-edbc-4aa0-9cb9-4482eceb2704",
+    "d3fe53b2-f02d-4bef-9dee-d2dacb1ea69d-6138d85-9e8b-4e37-a277-9af6d99e5afa",
   credits: null,
 };
 
@@ -33,6 +33,12 @@ export const cameraSlice = createSlice({
     setCredits: (state, action) => {
       state.credits = action.payload.credits;
     },
+    clearRecordingDetails: (state, actions) => {
+      state.recordingData.duration = null;
+      state.recordingData.path = null;
+      state.recordingData.size = null;
+      state.recordingData.codecs = null;
+    },
   },
 });
 
@@ -41,6 +47,11 @@ export const selectTabIndex = (state) => state.camera.index;
 export const selectAPIKEY = (state) => state.camera.apikey;
 export const selectGetCredits = (state) => state.camera.credits;
 
-export const { saveRecordingDetails, setTabIndex, setApiKey, setCredits } =
-  cameraSlice.actions;
+export const {
+  saveRecordingDetails,
+  setTabIndex,
+  setApiKey,
+  setCredits,
+  clearRecordingDetails,
+} = cameraSlice.actions;
 export default cameraSlice.reducer;
