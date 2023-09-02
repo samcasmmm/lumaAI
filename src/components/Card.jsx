@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const Card = ({ item }) => {
   const getUrlByType = (item, targetType) => {
@@ -10,12 +11,16 @@ const Card = ({ item }) => {
   };
 
   const imageUrl = getUrlByType(item, "thumb");
+  const navigation = useNavigation();
 
+  const handleNavigate = () => {
+    console.log(item.slug);
+    navigation.navigate("ViewSingleModel", {
+      slug: item.slug,
+    });
+  };
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => console.log(item.slug)}
-    >
+    <TouchableOpacity style={styles.container} onPress={handleNavigate}>
       <Text style={styles.title}>Card {item?.title}</Text>
       {imageUrl && (
         <View style={styles.imgContainer}>
