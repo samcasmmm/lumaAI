@@ -93,28 +93,28 @@
 
     <script>
       window.addEventListener("load", function () {
-           // 33a9bc05-2b3d-44e7-86a5-72baba9c86ff
-          const URL_PARAMS = new URLSearchParams(window.location.search);
-          const data = JSON.parse(URL_PARAMS.get("data"));
+        // 33a9bc05-2b3d-44e7-86a5-72baba9c86ff
+        const URL_PARAMS = new URLSearchParams(window.location.search);
+        const data = JSON.parse(URL_PARAMS.get("data"));
 
-          const title = document.querySelector("#title");
-          const username = document.querySelector("#username");
-          const status = document.querySelector("#status");
-          const date = document.querySelector("#date");
-          const model = document.querySelector("#model");
+        const title = document.querySelector("#title");
+        const username = document.querySelector("#username");
+        const status = document.querySelector("#status");
+        const date = document.querySelector("#date");
+        const model = document.querySelector("#model");
 
-          if (data) {
-            title.textContent = data.title;
-            username.textContent = data.username;
-            status.textContent = data.status;
-            date.textContent = data.date;
-            model.src = data.glbUrl
-          }
-        });
-          <script
-            type="module"
-            src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"
-          >
+        if (data) {
+          title.textContent = data.title;
+          username.textContent = data.username;
+          status.textContent = data.status;
+          date.textContent = data.date;
+          model.src = data.glbUrl;
+        }
+      });
     </script>
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"
+    ></script>
   </body>
 </html>
