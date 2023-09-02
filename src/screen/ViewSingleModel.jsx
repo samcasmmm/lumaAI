@@ -5,6 +5,7 @@ import { useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAPIKEY } from "../app/features/camera/cameraSlice";
 import { useGetACaptureQuery } from "../app/features/camera/captureApiSlice";
+import { useNavigation } from "@react-navigation/native";
 const ViewSingleModel = () => {
   const route = useRoute();
   const { title, username, status, date, glbUrl } = route.params;
@@ -12,6 +13,8 @@ const ViewSingleModel = () => {
   const HTMLPAGEURL = `https://luma-by-sameer.netlify.app/?data=${JSON.stringify(
     paramData
   )}`;
+
+  const navigation = useNavigation();
 
   console.log(HTMLPAGEURL);
   return (
@@ -23,7 +26,9 @@ const ViewSingleModel = () => {
         }}
         style={{ flex: 1 }}
       />
-      <Text style={styles.title}>Go Back</Text>
+      <Text style={styles.title} onPress={() => navigation.goBack()}>
+        Go Back
+      </Text>
     </View>
   );
 };

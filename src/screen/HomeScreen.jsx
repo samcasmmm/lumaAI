@@ -35,9 +35,6 @@ const HomeScreen = () => {
         <TabView.Item style={{ flex: 1, width: "100%" }}>
           <Home />
         </TabView.Item>
-        <TabView.Item style={{ backgroundColor: "green", width: "100%" }}>
-          <ViewCapture />
-        </TabView.Item>
       </TabView>
       <Tab
         value={index}

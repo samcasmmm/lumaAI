@@ -27,7 +27,7 @@ const Card = ({ item }) => {
   };
   return (
     <TouchableOpacity style={styles.container} onPress={handleNavigate}>
-      {/* <Text style={styles.title}>Card {item?.title}</Text> */}
+      <Text style={styles.title}>{item?.title}</Text>
       {imageUrl && (
         <View style={styles.imgContainer}>
           <Image source={{ uri: imageUrl }} style={styles.image} />
