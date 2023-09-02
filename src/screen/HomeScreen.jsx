@@ -4,7 +4,7 @@ import { Tab, TabView } from "@rneui/themed";
 import { Icon } from "@rneui/base";
 import CameraScreen from "./CameraScreen";
 import Home from "./Home";
-import ViewCapture from "./ViewCapture";
+import Setting from "./Setting";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAPIKEY } from "../app/features/camera/cameraSlice";
 import { useGetCreditsQuery } from "../app/features/camera/captureApiSlice";
@@ -34,6 +34,9 @@ const HomeScreen = () => {
         </TabView.Item>
         <TabView.Item style={{ flex: 1, width: "100%" }}>
           <Home />
+        </TabView.Item>
+        <TabView.Item style={{ flex: 1, width: "100%" }}>
+          <Setting />
         </TabView.Item>
       </TabView>
       <Tab

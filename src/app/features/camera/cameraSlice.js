@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const initialState = {
   recordingData: {
@@ -13,6 +14,7 @@ const initialState = {
   credits: null,
 };
 
+// "d3fe53b2-f02d-4bef-9dee-d2dacb1ea69d-6138d85-9e8b-4e37-a277-9af6d99e5afa",
 export const cameraSlice = createSlice({
   name: "camera",
   initialState,

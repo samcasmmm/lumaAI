@@ -64,7 +64,7 @@ const Home = () => {
       <Text style={styles.title}>View Captures</Text>
       <View style={styles.ListContainer}>
         {isLoading && <LoadingView />}
-        {creditsData?.used === 0 && <NotingToShow />}
+        {!APIKEY && <NotingToShow />}
         {!isFetching && (
           <FlatList
             data={captureData}
