@@ -194,7 +194,7 @@ const CameraScreen = () => {
           <View style={styles.modalContent}>
             <Text
               style={{
-                color: "#1e88e5",
+                color: "#059669",
                 fontWeight: "bold",
                 padding: 5,
                 fontSize: 16,
@@ -238,7 +238,7 @@ const CameraScreen = () => {
               <TouchableOpacity
                 style={{
                   width: "45%",
-                  backgroundColor: "#1e88e5",
+                  backgroundColor: "#059669",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
@@ -260,7 +260,7 @@ const CameraScreen = () => {
                 )}
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ width: "45%", backgroundColor: "#1e88e5" }}
+                style={{ width: "45%", backgroundColor: "#059669" }}
                 onPress={() => setModalVisible(false)}
               >
                 <Text

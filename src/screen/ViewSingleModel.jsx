@@ -8,19 +8,18 @@ import { useGetACaptureQuery } from "../app/features/camera/captureApiSlice";
 const ViewSingleModel = () => {
   const route = useRoute();
   const { title, username, status, date, glbUrl } = route.params;
+  const paramData = { title, username, status, date, glbUrl };
+  const HTMLPAGEURL = `https://luma-by-sameer.netlify.app/?data=${JSON.stringify(
+    paramData
+  )}`;
 
+  console.log(HTMLPAGEURL);
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.title}>View Model</Text>
       <WebView
         source={{
-          uri: `https://luma-by-sameer.netlify.app/?data=${encodeURIComponent(
-            title,
-            username,
-            status,
-            date,
-            glbUrl
-          )}`,
+          uri: HTMLPAGEURL,
         }}
         style={{ flex: 1 }}
       />
