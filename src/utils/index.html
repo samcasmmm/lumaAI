@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="https://cdn-luma.com/public/captures.lumalabs.ai/images/logo.svg"
+      type="image/x-icon"
+    />
+    <title>View Capture</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #eeeeee;
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border: 1px solid red;
+        width: 300px;
+        min-height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <model-viewer
+        alt="Neil Armstrong's Spacesuit from the Smithsonian Digitization Programs Office and National Air and Space Museum"
+        src="https://cdn-luma.com/b93869a8be9d1e47e0a508abdf0e938d5f0f334215167c3aa885967b27508bc2/New_Mouse_textured_mesh_glb.glb"
+        ar
+        environment-image="shared-assets/environments/moon_1k.hdr"
+        poster="shared-assets/models/NeilArmstrong.webp"
+        shadow-intensity="1"
+        camera-controls
+        touch-action="pan-y"
+      ></model-viewer>
+    </div>
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"
+    ></script>
+  </body>
+</html>
