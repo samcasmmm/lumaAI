@@ -14,14 +14,20 @@ const Card = ({ item }) => {
   const navigation = useNavigation();
 
   const handleNavigate = () => {
+    console.log(item);
     console.log(item.slug);
+    const textured_mesh_glbUrl = getUrlByType(item, "textured_mesh_glb");
     navigation.navigate("ViewSingleModel", {
-      slug: item.slug,
+      title: item.title,
+      username: item.username,
+      status: item.status,
+      date: item.date,
+      glbUrl: textured_mesh_glbUrl,
     });
   };
   return (
     <TouchableOpacity style={styles.container} onPress={handleNavigate}>
-      <Text style={styles.title}>Card {item?.title}</Text>
+      {/* <Text style={styles.title}>Card {item?.title}</Text> */}
       {imageUrl && (
         <View style={styles.imgContainer}>
           <Image source={{ uri: imageUrl }} style={styles.image} />

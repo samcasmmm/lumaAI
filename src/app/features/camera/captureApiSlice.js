@@ -46,7 +46,16 @@ export const captureApiSlices = apiSlice.injectEndpoints({
         },
       }),
     }),
-    getACapture: builder.query({}),
+    getACapture: builder.query({
+      query: ({ slug, key }) => ({
+        url: `${CAPTURE_API}/${slug}`,
+        method: "GET",
+        headers: {
+          Authorization: `luma-api-key=${key}`,
+          "Content-Type": "text/plain",
+        },
+      }),
+    }),
     getAllCapture: builder.query({
       query: (key) => ({
         url: `${CAPTURE_API}?skip=0&take=0&order=DESC`,

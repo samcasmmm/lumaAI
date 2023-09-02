@@ -8,6 +8,12 @@
       href="https://cdn-luma.com/public/captures.lumalabs.ai/images/logo.svg"
       type="image/x-icon"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <title>View Capture</title>
     <style>
       * {
@@ -22,6 +28,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        font-family: "Montserrat", sans-serif;
       }
       .container {
         display: flex;
@@ -41,6 +48,19 @@
       }
       .container .info {
         padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+      .container .info label {
+        font-size: 12px;
+        font-weight: 500;
+        opacity: 0.6;
+      }
+      .container .info p {
+        font-size: 16px;
+        font-weight: bold;
       }
     </style>
   </head>
@@ -56,12 +76,16 @@
       </model-viewer>
       <div class="info">
         <div class="head">
-          <p class="title">Title</p>
-          <p class="username">username</p>
+          <label for="title">Title</label>
+          <p id="title">Title</p>
+          <label for="username">username</label>
+          <p id="username">username</p>
         </div>
         <div class="head">
-          <p class="status">status</p>
-          <p class="date">date</p>
+          <label for="status">status</label>
+          <p id="status">status</p>
+          <label for="date">date</label>
+          <p id="date">date</p>
         </div>
       </div>
     </div>
@@ -72,27 +96,6 @@
       window.addEventListener("load", function () {
         console.log("hello");
       });
-
-      function fetchData(slug, apiKey) {
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", `luma-api-key=${apiKey}`);
-        var requestOptions = {
-          method: "GET",
-          headers: myHeaders,
-          redirect: "follow",
-        };
-
-        var apiUrl = `https://webapp.engineeringlumalabs.com/api/v2/capture/${slug}`;
-
-        fetch(apiUrl, requestOptions)
-          .then((response) => response.text())
-          .then((result) => console.log(result))
-          .catch((error) => console.log("error", error));
-      }
-
-      var apiKey = "your_api_key_here";
-      var slug = "your_slug_here";
-      fetchData(slug, apiKey);
     </script>
 
     <script

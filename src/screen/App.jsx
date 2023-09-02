@@ -4,6 +4,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./HomeScreen";
 import VideoViewer from "./VideoViewer";
+import ViewSingleModel from "./ViewSingleModel";
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -17,6 +18,7 @@ const App = () => {
       >
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="VideoViewer" component={VideoViewer} />
+        <Stack.Screen name="ViewSingleModel" component={ViewSingleModel} />
       </Stack.Navigator>
     </NavigationContainer>
   );
