@@ -23,6 +23,7 @@ const ViewSingleModel = () => {
         }}
         style={{ flex: 1 }}
       />
+      <Text style={styles.title}>Go Back</Text>
     </View>
   );
 };

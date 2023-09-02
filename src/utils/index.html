@@ -59,7 +59,7 @@
         opacity: 0.6;
       }
       .container .info p {
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
         padding: 0.5rem 0;
       }
@@ -92,6 +92,14 @@
     </div>
 
     <script>
+      function formatDate(inputDate) {
+        const date = new Date(inputDate);
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear().toString().slice(-2);
+        return `${day}/${month}/${year}`;
+      }
+
       window.addEventListener("load", function () {
         // 33a9bc05-2b3d-44e7-86a5-72baba9c86ff
         const URL_PARAMS = new URLSearchParams(window.location.search);
@@ -107,7 +115,7 @@
           title.textContent = data.title;
           username.textContent = data.username;
           status.textContent = data.status;
-          date.textContent = data.date;
+          date.textContent = formatDate(data.date);
           model.src = data.glbUrl;
         }
       });
