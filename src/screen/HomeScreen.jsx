@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Tab, TabView } from "@rneui/themed";
 import { Icon } from "@rneui/base";
 import CameraScreen from "./CameraScreen";
+import Home from "./Home";
 import ViewCapture from "./ViewCapture";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAPIKEY } from "../app/features/camera/cameraSlice";
@@ -31,12 +32,8 @@ const HomeScreen = () => {
         <TabView.Item style={{ width: "100%" }}>
           {index === 0 && <CameraScreen />}
         </TabView.Item>
-        <TabView.Item style={{ backgroundColor: "blue", width: "100%" }}>
-          <View>
-            <Text>hello</Text>
-            <Text>{}</Text>
-            <Button title="call" onPress={getCreditsData} />
-          </View>
+        <TabView.Item style={{ flex: 1, width: "100%" }}>
+          <Home />
         </TabView.Item>
         <TabView.Item style={{ backgroundColor: "green", width: "100%" }}>
           <ViewCapture />
@@ -46,10 +43,14 @@ const HomeScreen = () => {
         value={index}
         onChange={(e) => setIndex(e)}
         indicatorStyle={{
-          backgroundColor: "white",
-          height: 3,
+          backgroundColor: "#fff",
+          height: "5%",
         }}
-        variant="primary"
+        // variant="primary"
+        style={{
+          color: "#fff",
+          backgroundColor: "#059669",
+        }}
       >
         <Tab.Item>
           <Text style={styles.BotText}>Video</Text>
@@ -74,6 +75,6 @@ const styles = StyleSheet.create({
   BotText: {
     fontSize: 12,
     fontWeight: "bold",
-    color: "white",
+    color: "#fff",
   },
 });

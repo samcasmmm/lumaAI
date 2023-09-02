@@ -236,7 +236,12 @@ const CameraScreen = () => {
             />
             <View style={{ flexDirection: "row", gap: 10 }}>
               <TouchableOpacity
-                style={{ width: "45%", backgroundColor: "#1e88e5" }}
+                style={{
+                  width: "45%",
+                  backgroundColor: "#1e88e5",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
                 onPress={() => handleUploadCapture()}
               >
                 {!isLoading ? (
